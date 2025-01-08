@@ -1,0 +1,10 @@
+CREATE TABLE customers (
+    id VARCHAR(50) NOT NULL,
+    name VARCHAR(50) NOT NULL,
+    cpf VARCHAR(11) NOT NULL UNIQUE,
+    age INT NOT NULL,
+    numberAccount INT NOT NULL AUTO_INCREMENT UNIQUE,
+    balance DECIMAL(15,2) NOT NULL DEFAULT 0.00,
+    
+    PRIMARY KEY (cpf)
+);

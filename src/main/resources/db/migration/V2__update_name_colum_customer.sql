@@ -1,0 +1,1 @@
+ALTER TABLE customers CHANGE COLUMN numberAccount number_account INT NOT NULL AUTO_INCREMENT UNIQUE;
