@@ -16,13 +16,14 @@ public class TransactionDAOImpl implements TransactionDAO {
   @Override
   @Transactional
   public void save(Transaction transaction) {
+
     entityManager.createNativeQuery(
-        "INSERT INTO transactions (id, origin_account, destiny_account, value) VALUES (:id, :origin_account, :destiny_account, :value) ",
-        Transaction.class)
+        "INSERT INTO transactions (id, origin_account, destiny_account, value, at_created) VALUES (:id, :originAccount, :destinyAccount, :value, :atCreated)")
         .setParameter("id", transaction.getId())
+        .setParameter("originAccount", transaction.getOriginAccount())
+        .setParameter("destinyAccount", transaction.getDestinyAccount())
         .setParameter("value", transaction.getValue())
-        .setParameter("origin_account", transaction.getOriginAccount())
-        .setParameter("destiny_account", transaction.getOriginAccount())
+        .setParameter("atCreated", transaction.getAtCreated())
         .executeUpdate();
   }
 }
