@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crud.modules.transactions.DTO.TransactionRequest;
-import com.crud.modules.transactions.DTO.TransactionResponse;
 import com.crud.modules.transactions.usecase.RegisterTransaction;
+import com.crud.utils.ResponseMessage;
 import com.crud.utils.TransactionConvert;
 
 import io.swagger.v3.oas.annotations.Operation;
@@ -29,12 +29,11 @@ public class TransactionController {
       @ApiResponse(responseCode = "400", description = "Not possible make transaction")
   })
   @PostMapping
-  public ResponseEntity<TransactionResponse> createTransaction(
+  public ResponseEntity<ResponseMessage> createTransaction(
       @Valid @RequestBody TransactionRequest transactionRequest) throws Exception {
-    TransactionResponse transactionResponse = registerTransaction
-        .execute(TransactionConvert.toEntity(transactionRequest));
 
-    return ResponseEntity.ok()
-        .body(transactionResponse);
+    ResponseMessage response = registerTransaction.execute(TransactionConvert.toEntity(transactionRequest));
+
+    return ResponseEntity.ok(response);
   }
 }

@@ -1,10 +1,10 @@
 package com.crud.utils;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 import com.crud.modules.transactions.DTO.TransactionRequest;
-import com.crud.modules.transactions.DTO.TransactionResponse;
 import com.crud.modules.transactions.entity.Transaction;
 
 public class TransactionConvert {
@@ -12,19 +12,11 @@ public class TransactionConvert {
     Transaction transaction = new Transaction();
 
     transaction.setId(UUID.randomUUID().toString());
-    transaction.setOriginAccount(transactionRequest.getCustomerOriginId());
-    transaction.setDestinyAccount(transactionRequest.getCustomerDestinyId());
+    transaction.setOriginAccount(transactionRequest.getOriginAccount());
+    transaction.setDestinyAccount(transactionRequest.getDestinyAccount());
     transaction.setValue(transactionRequest.getValue());
-    transaction.setAtCreated(LocalDateTime.now().toString());
+    transaction.setAtCreated(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
 
     return transaction;
-  }
-
-  public static TransactionResponse toResponse(String message) {
-    TransactionResponse transactionResponse = new TransactionResponse();
-
-    transactionResponse.setMessage(message);
-
-    return transactionResponse;
   }
 }

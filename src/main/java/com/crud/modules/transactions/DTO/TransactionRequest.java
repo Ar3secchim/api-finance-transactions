@@ -6,7 +6,7 @@ import lombok.Getter;
 
 @Getter
 public class TransactionRequest {
-  private String customerOriginId;
-  private String customerDestinyId;
+  private String originAccount;
+  private String destinyAccount;
   private BigDecimal value;
 }
