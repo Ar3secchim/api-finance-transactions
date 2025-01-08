@@ -2,6 +2,7 @@ package com.crud.modules.customers.usecase;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crud.modules.customers.DAO.CustomerDAO;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ListCustomer {
+  @Autowired
   private CustomerDAO customerDAO;
 
   public List<CustomerResponse> execute() {
