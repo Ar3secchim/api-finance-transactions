@@ -3,7 +3,6 @@ package com.crud.utils;
 public class ValidateCpf {
 
   public static Boolean execute(String cpf) {
-    cpf = cpf.replaceAll("[^0-9]", "");
 
     if (cpf.length() != 11 || cpf.equals("00000000000") || cpf.equals("11111111111") || cpf.equals("22222222222")
         || cpf.equals("33333333333") || cpf.equals("44444444444") || cpf.equals("55555555555")

@@ -22,6 +22,15 @@ public class RegisterCustomer {
   @Transactional
   public CustomerResponse execute(Customer customer) throws Exception {
     // TODO - Implementar validação de CPF
+    customer.setCpf(customer.getCpf().replaceAll("[^0-9]", ""));
+
+    if (!ValidateCpf.execute(customer.getCpf())) {
+      throw new BadRequestClient("Invalid CPF");
+    }
+
+    if (customerDAO.findByCpf(customer.getCpf()) != null) {
+      throw new BadRequestClient("CPF já está cadastrado");
+    }
 
     if (customer.getName() == null || customer.getName().isEmpty()) {
       throw new BadRequestClient("Name is required");
@@ -30,12 +39,6 @@ public class RegisterCustomer {
     if (customer.getAge() == null || customer.getAge() < 18) {
       throw new BadRequestClient("Age is required and must be greater than 18");
     }
-
-    if (!ValidateCpf.execute(customer.getCpf())) {
-      throw new BadRequestClient("Invalid CPF");
-    }
-
-    customer.setCpf(customer.getCpf().replaceAll("[^0-9]", ""));
 
     Customer customerSave = customerDAO.SaveAndFetch(customer);
     return CustomerConvert.toResponse(customerSave);
