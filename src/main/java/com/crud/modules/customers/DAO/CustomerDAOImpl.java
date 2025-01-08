@@ -48,9 +48,15 @@ public class CustomerDAOImpl implements CustomerDAO {
   @Transactional
   public Customer SaveAndFetch(Customer customer) {
     save(customer);
+    return findById(customer.getId());
+  }
+
+  @Override
+  @Transactional
+  public Customer findById(String id) {
     return (Customer) entityManager.createNativeQuery(
         "SELECT * FROM customers WHERE id = :id", Customer.class)
-        .setParameter("id", customer.getId())
+        .setParameter("id", id)
         .getSingleResult();
   }
 }
