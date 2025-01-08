@@ -9,6 +9,8 @@ public interface CustomerDAO {
 
   // TODO create update void updateCustomerBalance(String cpf, Double newBalance);
 
+  Customer findById(String id);
+
   void save(Customer customer);
 
   List<Customer> findAll();
