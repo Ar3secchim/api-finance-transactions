@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.crud.infra.exception.BadRequestClient;
 import com.crud.modules.customers.DTO.BalanceResquest;
 import com.crud.modules.customers.DTO.CustomerRequest;
 import com.crud.modules.customers.DTO.CustomerResponse;
@@ -60,17 +59,17 @@ public class CustomerController {
                         @ApiResponse(responseCode = "400", description = "Not possible get all customers")
         })
         @GetMapping
-        public ResponseEntity<List<CustomerResponse>> getAllCustomer() {
+        public ResponseEntity<List<CustomerResponse>> getAllCustomer() throws Exception {
                 return ResponseEntity.ok(listCustomer.execute());
         }
 
         @Operation(summary = "Get customer by id", description = "Return customer")
         @ApiResponses(value = {
                         @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
-                        @ApiResponse(responseCode = "400", description = "Not possible get customers")
+                        @ApiResponse(responseCode = "404", description = "Not possible get customers")
         })
         @GetMapping("/{id}")
-        public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable String id) throws BadRequestClient {
+        public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable String id) throws Exception {
                 return ResponseEntity.ok(findCustomer.findById(id));
         }
 
