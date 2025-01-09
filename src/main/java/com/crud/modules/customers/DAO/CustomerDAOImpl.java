@@ -1,5 +1,6 @@
 package com.crud.modules.customers.DAO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import org.springframework.stereotype.Repository;
@@ -32,10 +33,14 @@ public class CustomerDAOImpl implements CustomerDAO {
   @Override
   @Transactional
   public Customer findByCpf(String cpf) {
-    return (Customer) entityManager.createNativeQuery(
-        "SELECT * FROM customers WHERE cpf = :cpf", Customer.class)
-        .setParameter("cpf", cpf)
-        .getSingleResult();
+    try {
+      return (Customer) entityManager.createNativeQuery(
+          "SELECT * FROM customers WHERE cpf = :cpf", Customer.class)
+          .setParameter("cpf", cpf)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
   }
 
   @Override
@@ -72,5 +77,15 @@ public class CustomerDAOImpl implements CustomerDAO {
     } catch (NoResultException e) {
       return null;
     }
+  }
+
+  @Override
+  @Transactional
+  public void updateBalance(String account, BigDecimal newBalance) {
+    entityManager.createNativeQuery(
+        "UPDATE customers SET balance = :newBalance WHERE number_account = :account")
+        .setParameter("newBalance", newBalance)
+        .setParameter("account", account)
+        .executeUpdate();
   }
 }

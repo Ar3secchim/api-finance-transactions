@@ -13,12 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.crud.infra.exception.BadRequestClient;
+import com.crud.modules.customers.DTO.BalanceResquest;
 import com.crud.modules.customers.DTO.CustomerRequest;
 import com.crud.modules.customers.DTO.CustomerResponse;
 import com.crud.modules.customers.usecase.FindCustomer;
 import com.crud.modules.customers.usecase.ListCustomer;
 import com.crud.modules.customers.usecase.RegisterCustomer;
+import com.crud.modules.customers.usecase.UpdateBalanceCustomer;
 import com.crud.utils.CustomerConvert;
+import com.crud.utils.ResponseMessage;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,6 +37,8 @@ public class CustomerController {
         FindCustomer findCustomer;
         @Autowired
         ListCustomer listCustomer;
+        @Autowired
+        UpdateBalanceCustomer updateBalance;
 
         @Operation(summary = "Create a customer", description = "Returns a customer")
         @ApiResponses(value = {
@@ -67,5 +72,19 @@ public class CustomerController {
         @GetMapping("/{id}")
         public ResponseEntity<CustomerResponse> getCustomerById(@PathVariable String id) throws BadRequestClient {
                 return ResponseEntity.ok(findCustomer.findById(id));
+        }
+
+        @Operation(summary = "Create new balance customer", description = "Returns msg success")
+        @ApiResponses(value = {
+                        @ApiResponse(responseCode = "200", description = "Successfully retrieved"),
+                        @ApiResponse(responseCode = "400", description = "Not possible update customer")
+        })
+        @PostMapping("/balance")
+        public ResponseEntity<ResponseMessage> updateBalance(
+                        @Valid @RequestBody BalanceResquest BalanceRequest) throws Exception {
+
+                ResponseMessage response = updateBalance.execute(BalanceRequest);
+
+                return ResponseEntity.ok(response);
         }
 }

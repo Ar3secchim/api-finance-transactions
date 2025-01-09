@@ -1,5 +1,6 @@
 package com.crud.modules.customers.DAO;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.crud.modules.customers.entity.Customer;
@@ -7,8 +8,7 @@ import com.crud.modules.customers.entity.Customer;
 public interface CustomerDAO {
   Customer findByCpf(String cpf);
 
-  // TODO create update void updateCustomerBalance(String account, Double
-  // newBalance);
+  void updateBalance(String account, BigDecimal newBalance);
 
   Customer findById(String id);
 

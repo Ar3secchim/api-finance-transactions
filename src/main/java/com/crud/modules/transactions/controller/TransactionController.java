@@ -23,7 +23,7 @@ public class TransactionController {
   @Autowired
   RegisterTransaction registerTransaction;
 
-  @Operation(summary = "Create a transaction", description = "Returns a transaction")
+  @Operation(summary = "Create a transaction", description = "Returns a msg success")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Successfully retrieved"),
       @ApiResponse(responseCode = "400", description = "Not possible make transaction")
