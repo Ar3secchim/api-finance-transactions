@@ -34,6 +34,6 @@ public class TransactionController {
 
     ResponseMessage response = registerTransaction.execute(TransactionConvert.toEntity(transactionRequest));
 
-    return ResponseEntity.ok(response);
+    return ResponseEntity.status(201).body(response);
   }
 }
