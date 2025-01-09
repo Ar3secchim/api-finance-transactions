@@ -6,5 +6,6 @@ public interface TransactionDAO {
   void save(Transaction transaction);
 
   // TODO create List<Transaction> findAll();
+
   // TODO create Transaction findById(String id);
 }

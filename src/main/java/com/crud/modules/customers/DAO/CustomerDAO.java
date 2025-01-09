@@ -7,9 +7,12 @@ import com.crud.modules.customers.entity.Customer;
 public interface CustomerDAO {
   Customer findByCpf(String cpf);
 
-  // TODO create update void updateCustomerBalance(String cpf, Double newBalance);
+  // TODO create update void updateCustomerBalance(String account, Double
+  // newBalance);
 
   Customer findById(String id);
+
+  Customer findByAccount(String account);
 
   void save(Customer customer);
 

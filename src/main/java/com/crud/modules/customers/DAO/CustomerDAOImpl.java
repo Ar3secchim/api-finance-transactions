@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import com.crud.modules.customers.entity.Customer;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 
@@ -58,5 +59,18 @@ public class CustomerDAOImpl implements CustomerDAO {
         "SELECT * FROM customers WHERE id = :id", Customer.class)
         .setParameter("id", id)
         .getSingleResult();
+  }
+
+  @Override
+  @Transactional
+  public Customer findByAccount(String account) {
+    try {
+      return (Customer) entityManager
+          .createNativeQuery("SELECT * FROM customers WHERE number_account = :account", Customer.class)
+          .setParameter("account", account)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
   }
 }
