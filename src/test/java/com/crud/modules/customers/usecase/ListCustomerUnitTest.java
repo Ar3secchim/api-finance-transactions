@@ -1,4 +1,4 @@
-package com.crud.usecase.customers;
+package com.crud.modules.customers.usecase;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
@@ -18,7 +18,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import com.crud.modules.customers.DAO.CustomerDAO;
 import com.crud.modules.customers.DTO.CustomerResponse;
 import com.crud.modules.customers.entity.Customer;
-import com.crud.modules.customers.usecase.ListCustomer;
 
 @ExtendWith(SpringExtension.class)
 public class ListCustomerUnitTest {
