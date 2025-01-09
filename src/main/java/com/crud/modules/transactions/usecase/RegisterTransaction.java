@@ -52,7 +52,7 @@ public class RegisterTransaction {
 
     // Validar saldo
     if (originAccountExist.getBalance().compareTo(transaction.getValue()) < 0) {
-      throw new InvalidRequestException("Saldo insuficiente");
+      throw new InvalidRequestException("Saldo insuficiente para a transação.");
     }
 
     // Salvar transação

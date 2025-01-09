@@ -22,7 +22,7 @@ public class RegisterCustomer {
 
   @Transactional
   public CustomerResponse execute(Customer customer) throws InvalidRequestException, DuplicateCpfException {
-    // TODO - Implementar validação de CPF
+
     customer.setCpf(customer.getCpf().replaceAll("[^0-9]", ""));
 
     if (!ValidateCpf.execute(customer.getCpf())) {
