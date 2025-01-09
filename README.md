@@ -19,7 +19,7 @@ Para baixar o repositório, siga os passos abaixo:
 1. Clone o repositório para sua máquina local usando o comando:
 
   ```sh
-  git clone https://github.com/usuario/api-finance-transactions.git
+  git clone https://github.com/ar3secchim/api-finance-transactions.git
   ```
 
 2. Navegue até o diretório do projeto:
