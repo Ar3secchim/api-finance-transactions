@@ -17,11 +17,11 @@ public class FindCustomer {
   @Autowired
   private CustomerDAO customerDAO;
 
-  public CustomerResponse findByCpf(String cpf) throws Exception {
+  public CustomerResponse findByCpf(String cpf) throws BadRequestClient {
     Customer customer = customerDAO.findByCpf(cpf);
 
     if (customer == null) {
-      throw new Exception("Customer not found with cpf: " + cpf);
+      throw new BadRequestClient("Customer not found with cpf: " + cpf);
     }
     return CustomerConvert.toResponse(customer);
   }
