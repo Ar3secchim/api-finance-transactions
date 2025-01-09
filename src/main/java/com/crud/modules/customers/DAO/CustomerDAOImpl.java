@@ -60,10 +60,14 @@ public class CustomerDAOImpl implements CustomerDAO {
   @Override
   @Transactional
   public Customer findById(String id) {
-    return (Customer) entityManager.createNativeQuery(
-        "SELECT * FROM customers WHERE id = :id", Customer.class)
-        .setParameter("id", id)
-        .getSingleResult();
+    try {
+      return (Customer) entityManager.createNativeQuery(
+          "SELECT * FROM customers WHERE id = :id", Customer.class)
+          .setParameter("id", id)
+          .getSingleResult();
+    } catch (NoResultException e) {
+      return null;
+    }
   }
 
   @Override
