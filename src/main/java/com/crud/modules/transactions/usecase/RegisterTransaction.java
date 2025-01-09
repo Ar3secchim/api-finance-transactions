@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.crud.infra.exception.BadRequestClient;
+import com.crud.infra.exception.InvalidRequestException;
 import com.crud.modules.customers.DAO.CustomerDAO;
 import com.crud.modules.customers.entity.Customer;
 import com.crud.modules.transactions.DAO.TransactionDAO;
@@ -25,7 +26,7 @@ public class RegisterTransaction {
   private CustomerDAO customerDAO;
 
   @Transactional
-  public ResponseMessage execute(Transaction transaction) {
+  public ResponseMessage execute(Transaction transaction) throws BadRequestClient, InvalidRequestException {
     // Formatar as contas
     String originAccount = formatAccount(transaction.getOriginAccount());
     String destinationAccount = formatAccount(transaction.getDestinyAccount());
@@ -41,17 +42,17 @@ public class RegisterTransaction {
 
     // Validar se as contas são diferentes
     if (originAccount.equals(destinationAccount)) {
-      throw new BadRequestClient("Conta de origem e destino não podem ser iguais");
+      throw new InvalidRequestException("Conta de origem e destino não podem ser iguais");
     }
 
     // Validar valor da transferência
     if (transaction.getValue().compareTo(BigDecimal.ZERO) <= 0) {
-      throw new BadRequestClient("Valor da transferência deve ser maior que zero");
+      throw new InvalidRequestException("Valor da transferência deve ser maior que zero");
     }
 
     // Validar saldo
     if (originAccountExist.getBalance().compareTo(transaction.getValue()) < 0) {
-      throw new BadRequestClient("Saldo insuficiente");
+      throw new InvalidRequestException("Saldo insuficiente");
     }
 
     // Salvar transação
