@@ -18,7 +18,7 @@ public class ListCustomer {
   @Autowired
   private CustomerDAO customerDAO;
 
-  public List<CustomerResponse> execute() {
+  public List<CustomerResponse> execute() throws Exception {
     List<Customer> customers = customerDAO.findAll();
     return CustomerConvert.toListResponse(customers);
   }
