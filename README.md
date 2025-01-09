@@ -12,6 +12,62 @@ O objetivo deste teste é avaliar suas habilidades de programação, considerand
 
 Este teste faz parte de um processo seletivo, e a análise levará em conta a senioridade do candidato (Junior), com foco no aprendizado e potencial de crescimento.
 
+## Como Baixar o Repositório do GitHub
+
+Para baixar o repositório, siga os passos abaixo:
+
+1. Clone o repositório para sua máquina local usando o comando:
+
+  ```sh
+  git clone https://github.com/usuario/api-finance-transactions.git
+  ```
+
+2. Navegue até o diretório do projeto:
+
+  ```sh
+  cd api-finance-transactions
+  ```
+
+### Como Rodar na Máquina Usando Docker
+
+Para rodar o projeto utilizando Docker, siga os passos abaixo:
+
+1. Certifique-se de que o Docker está instalado e em execução na sua máquina.
+
+2. Inicie o contêiner Docker:
+
+  ```sh
+  docker run -p 8080:8080 api-finance-transactions
+  ```
+
+4. A API estará disponível em `http://localhost:8081`.
+
+### Como Rodar na Máquina Sem Docker
+
+Caso prefira rodar o projeto sem utilizar Docker, siga os passos abaixo para configurar o banco de dados H2 no arquivo `application.properties`:
+
+1. Abra o arquivo `src/main/resources/application.properties`.
+
+2. Adicione as seguintes configurações:
+
+  ```properties
+  spring.datasource.url=jdbc:h2:mem:testdb
+  spring.datasource.driverClassName=org.h2.Driver
+  spring.datasource.username=sa
+  spring.datasource.password=password
+  spring.h2.console.enabled=true
+  spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
+  spring.jpa.hibernate.ddl-auto=update
+  ```
+
+3. Inicie a aplicação utilizando o comando:
+
+  ```sh
+  ./mvnw spring-boot:run
+  ```
+
+4. A API estará disponível em `http://localhost:8081` e o console do H2 pode ser acessado em `http://localhost:8081/h2-console`.
+
 ## Decisões Técnicas
 
 ### Tecnologias Utilizadas
