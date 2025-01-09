@@ -1,4 +1,4 @@
-> # Teste para Desenvolvedor Junior (Jr)
+# Teste para Desenvolvedor Junior (Jr)
 
 ## 🚀 Objetivo do Teste
 
@@ -16,159 +16,270 @@ Este teste faz parte de um processo seletivo, e a análise levará em conta a se
 
 ### Tecnologias Utilizadas
 
- 1. Spring Boot:
+1. **Spring Boot**:
 
 - Configuração do projeto simplificada.
 - Desenvolvimento rápido e eficiente de APIs RESTful.
 - Integração com Spring Data JPA para persistência.
 
- 2. JPA:
+2. **JPA**:
 
 - Para mapeamento das entidades do banco de dados.
 - Redução de complexidade no gerenciamento dos dados.
 
- 3. Flyway:
+3. **Flyway**:
 
 - Controle de versão do banco de dados, garantindo consistência nas migrações.
 
- 4. Lombok:
+4. **Lombok**:
 
 - Redução de boilerplate (getters, setters, construtores, etc.).
 - Melhor legibilidade e manutenção do código.
 
- 5. Banco H2:
+5. **Docker**:
 
-- Banco em memória para simplificar o desenvolvimento e execução de testes.
+- Simplificação do ambiente de desenvolvimento e testes.
+
+6. **Banco H2**:
+
+- Banco em memória para simplificar a execução de testes.
 
 ### Decisões para Cada Endpoint
 
-1. Criar Usuário
+1. **Criar Usuário**
 
-- POST /api/users
+- **POST /api/users**
 - Validação: Verificar idade mínima e CPF único antes de persistir o usuário.
 - Banco de Dados: JPA gerenciará a persistência com validações usando anotações.
 - Lombok: Utilizado para criar getters e setters automáticos nas entidades.
 - Tratamento de Erros: Retornar 400 se CPF for duplicado ou idade for inválida.
 - Flyway: Criar tabelas e constraints via script de migration.
 
-Consultar Usuário
+2. **Consultar Usuário**
 
-- GET /api/users/{id} e /api/users
+- **GET /api/users/{id}** e **/api/users**
 - Banco de Dados: JPA realizará as consultas usando métodos derivados do Spring Data.
 - Tratamento de Erros: Retornar 404 se o ID não existir.
 - DTOs: Utilizar objetos DTO para formatar a resposta.
 
-Transferir Dinheiro
+3. **Transferir Dinheiro**
 
-- POST /api/transactions
+- **POST /api/transactions**
 - Validação: Verificar se ambas as contas existem e se o saldo do remetente é suficiente.
 - Banco de Dados: Atualização de saldo será feita em transação controlada pelo Spring.
 - Tratamento de Erros:
-- 404: Conta não encontrada.
-- 400: Saldo insuficiente ou requisição inválida.
-
-### Regras de Negócio
-
-1. **Cadastro de Usuário:**
-   - O usuário deve ter nome, idade, CPF e um número de conta gerado automaticamente.
-   - Apenas usuários com 18 anos ou mais podem ser cadastrados.
-   - O CPF deve ser único para cada usuário.
-
-2. **Consulta de Usuário:**
-   - Permitir buscar um usuário por id ou listar todos os usuários.
-   - A resposta deve conter nome, idade, CPF, número da conta e saldo.
-
-3. **Transferências:**
-   - Transferências só podem ser realizadas entre contas existentes.
-   - O saldo do remetente deve ser maior ou igual ao valor transferido.
-   - Caso uma das contas não exista, retornar erro com status 404.
-
-4. **Tratamento de Erros:**
-   - Retornar mensagens claras e status HTTP apropriados para entradas inválidas.
-   - Exemplos:
-     - 400: Requisição inválida (ex.: CPF duplicado ou saldo insuficiente).
-     - 404: Conta ou usuário não encontrado.
+  - 404: Conta não encontrada.
+  - 400: Saldo insuficiente ou requisição inválida.
 
 ## Endpoints
 
 ### Criar Usuário
 
-``POST /api/users``
+#### Descrição
 
-**Corpo da Requisição:**
+Cria um novo usuário no sistema.
 
-```json
-{
-  "nome": "João Silva",
-  "idade": 25,
-  "cpf": "123.456.789-10"
-}
-```
+**`POST /api/users`**
 
-**Resposta de Sucesso:**
+- **Corpo da Requisição**
 
-```json
-{
-  "id": 1,
-  "nome": "João Silva",
-  "idade": 25,
-  "cpf": "123.456.789-10",
-  "numeroConta": "000123",
-  "saldo": 0.00
-}
-```
+  ```json
+  {
+   "nome": "João Silva",
+   "idade": 25,
+   "cpf": "123.456.789-10"
+  }
+  ```
 
-**Resposta de Erro:**
+- **Respostas**
 
-```json
-{
-  "error": "CPF já cadastrado."
-}
-```
+  - **Sucesso (201 Created)**:
+
+   ```json
+   {
+    "id": 1,
+    "nome": "João Silva",
+    "idade": 25,
+    "cpf": "123.456.789-10",
+    "numeroConta": "000123",
+    "saldo": 0.00
+   }
+   ```
+
+  - **Erro (400 Bad Request)**:
+
+   ```json
+   {
+    "error": "CPF já cadastrado."
+   }
+   ```
+
+   ```json
+   {
+    "error": "Idade mínima de 18 anos é obrigatória."
+   }
+   ```
+
+### Consultar Usuário por ID
+
+#### Descrição
+
+Obtém os detalhes de um usuário com base no ID.
+
+**`GET /api/users/{id}`**
+
+- **Parâmetros**
+  - `id` (path): ID do usuário.
+
+- **Respostas**
+  - **Sucesso (200 OK)**:
+
+   ```json
+   {
+    "id": 1,
+    "nome": "João Silva",
+    "idade": 25,
+    "cpf": "123.456.789-10",
+    "numeroConta": "000123",
+    "saldo": 150.00
+   }
+   ```
+
+  - **Erro (404 Not Found)**:
+
+   ```json
+   {
+    "error": "Usuário não encontrado."
+   }
+   ```
+
+### Listar Todos os Usuários
+
+#### Descrição
+
+Obtém a lista de todos os usuários cadastrados no sistema.
+
+**`GET /api/users`**
+
+- **Respostas**
+  - **Sucesso (200 OK)**:
+
+   ```json
+   [
+    {
+      "id": 1,
+      "nome": "João Silva",
+      "idade": 25,
+      "cpf": "123.456.789-10",
+      "numeroConta": "000123",
+      "saldo": 150.00
+    },
+    {
+      "id": 2,
+      "nome": "Maria Oliveira",
+      "idade": 30,
+      "cpf": "987.654.321-00",
+      "numeroConta": "000124",
+      "saldo": 300.00
+    }
+   ]
+   ```
 
 ### Transferir Dinheiro
 
-``POST /api/transactions``
+#### Descrição
 
-**Corpo da Requisição:**
+Realiza a transferência de dinheiro entre duas contas.
 
-```json
-{
-  "contaOrigem": "000123",
-  "contaDestino": "000456",
-  "valor": 100.00
-}
-```
+**`POST /api/transactions`**
 
-**Resposta de Sucesso:**
+- **Corpo da Requisição**
 
-```json
-{
-  "mensagem": "Transferência realizada com sucesso."
-}
-```
+  ```json
+  {
+   "contaOrigem": "000123",
+   "contaDestino": "000456",
+   "valor": 100.00
+  }
+  ```
 
-**Erro (Saldo Insuficiente):**
+- **Respostas**
+  - **Sucesso (200 OK)**:
 
-```json
-{
-  "error": "Saldo insuficiente para a transação."
-}
-```
+   ```json
+   {
+    "mensagem": "Transferência realizada com sucesso."
+   }
+   ```
 
-### Consultar Usuário
+  - **Erro (404 Not Found)**:
 
-``GET /api/users/{id}``
+   ```json
+   {
+    "error": "Conta de origem ou destino não encontrada."
+   }
+   ```
 
-**Resposta de Sucesso:**
+  - **Erro (400 Bad Request)**:
 
-```json
-{
-  "id": 1,
-  "nome": "João Silva",
-  "idade": 25,
-  "cpf": "123.456.789-10",
-  "numeroConta": "000123",
-  "saldo": 150.00
-}
-```
+   ```json
+   {
+    "error": "Saldo insuficiente para a transação."
+   }
+   ```
+
+   ```json
+   {
+    "error": "Conta de origem e destino não podem ser iguais."
+   }
+   ```
+
+   ```json
+   {
+    "error": "Valor da transferência deve ser maior que zero."
+   }
+   ```
+
+### Consultar Transações
+
+#### Descrição
+
+Lista todas as transações realizadas.
+
+**`GET /api/transactions`**
+
+- **Respostas**
+  - **Sucesso (200 OK)**:
+
+   ```json
+   [
+    {
+      "id": "113faa26-7e9c-4eda-b2f6-307fe8864be4",
+      "contaOrigem": "000123",
+      "contaDestino": "000456",
+      "valor": 100.00,
+      "atCreated": "2025-01-09T10:00:00Z"
+    },
+    {
+      "id": "223faa26-8e8c-5eda-c3f6-409fe9875ce5",
+      "contaOrigem": "000124",
+      "contaDestino": "000789",
+      "valor": 200.00,
+      "atCreated": "2025-01-09T12:00:00Z"
+    }
+   ]
+   ```
+
+  - **Erro (404 Not Found)**:
+
+   ```json
+   {
+    "error": "Nenhuma transação encontrada."
+   }
+   ```
+
+## Considerações
+
+- Todos os endpoints retornam respostas em formato JSON.
+- Utilize os códigos de status HTTP apropriados para validar a resposta das requisições.
+- O tratamento de erros é padronizado e visa fornecer informações claras para o cliente.
